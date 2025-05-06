@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
-import { SIDE_MENU_USER_DATA } from "../../utils/data"; // Only user data is needed
+import { SIDE_MENU_USER_DATA } from "../../utils/data";
 
 const SideMenu = ({ activeMenu }) => {
   const { user, clearUser } = useContext(UserContext);
@@ -11,26 +11,26 @@ const SideMenu = ({ activeMenu }) => {
   const handleClick = (route) => {
     if (route === "logout") {
       handleLogout();
-      return;
+    } else {
+      navigate(route);
     }
-    navigate(route);
   };
 
   const handleLogout = () => {
-    localStorage.clear();
-    clearUser();
+    clearUser(); // Already removes localStorage & user context
     navigate("/login");
   };
 
   useEffect(() => {
     if (user) {
-      setSideMenuData(SIDE_MENU_USER_DATA); // Directly use user data for side menu
+      setSideMenuData(SIDE_MENU_USER_DATA);
+    } else {
+      setSideMenuData([]); // Clear menu if no user
     }
   }, [user]);
 
   return (
     <div className="w-64 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 sticky top-[61px] z-20">
-
       <div className="flex flex-col items-center justify-center mb-7 pt-5">
         <div
           className="relative cursor-pointer hover:opacity-80 transition"
@@ -48,9 +48,12 @@ const SideMenu = ({ activeMenu }) => {
           />
         </div>
 
-
-        <h5 className="text-gray-950 font-medium leading-6 mt-3">{user?.name || "Anonymous"}</h5>
-        <p className="text-[12px] text-gray-500">{user?.email || "Email not available"}</p>
+        <h5 className="text-gray-950 font-medium leading-6 mt-3">
+          {user?.name || "Anonymous"}
+        </h5>
+        <p className="text-[12px] text-gray-500">
+          {user?.email || "Email not available"}
+        </p>
       </div>
 
       <div className="space-y-2 px-2">
@@ -61,11 +64,11 @@ const SideMenu = ({ activeMenu }) => {
             <button
               key={`menu_${index}`}
               onClick={() => handleClick(item.path)}
-              className={`w-full flex items-center gap-4 text-[15px] 
-                            ${activeMenu === item.label
-                  ? "text-blue-500 bg-linear-to-r from-blue-50/40 to-blue-100/50 border-r-3"
-                  : ""
-                } py-3 px-6 mb-3 cursor-pointer`}
+              className={`w-full flex items-center gap-4 text-[15px] py-3 px-6 mb-3 cursor-pointer
+                ${activeMenu === item.label
+                  ? "text-blue-500 bg-gradient-to-r from-blue-50/40 to-blue-100/50 border-r-4 border-blue-500"
+                  : "text-gray-700 hover:bg-gray-100"
+                }`}
             >
               {item.icon && <item.icon className="text-xl" />}
               {item.label}
