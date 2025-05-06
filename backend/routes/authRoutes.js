@@ -1,26 +1,28 @@
 const express = require("express");
 const router = express.Router();
-const { protect } = require('../middlewares/authMiddleware');
-const upload = require('../middlewares/uploadMiddleware');
 
+// Middlewares
+const { protect } = require("../middlewares/authMiddleware");
+const upload = require("../middlewares/uploadMiddleware"); // Must export multer instance
+
+// Controllers
 const {
-    registerUser,
-    loginUser,
-    getUserProfile,
-    updateUserProfile,
-} = require('../controllers/authController');
+  registerUser,
+  loginUser,
+  getUserProfile,
+  updateUserProfile,
+} = require("../controllers/authController");
+const { uploadImage } = require("../controllers/uploadController");
 
-const { uploadImage } = require('../controllers/uploadController');
-
-// Auth
-router.post("/register", upload, registerUser);
+// Auth Routes
+router.post("/register", upload.single("profileImage"), registerUser);
 router.post("/login", loginUser);
 
-// Profile
+// User Profile Routes
 router.get("/profile", protect, getUserProfile);
 router.put("/profile", protect, updateUserProfile);
 
-// File Upload
-router.post("/upload-images", upload, uploadImage);
+// Image Upload Route (optional/extra)
+router.post("/upload-images", protect, upload.single("image"), uploadImage);
 
 module.exports = router;

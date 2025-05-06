@@ -2,6 +2,7 @@ const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const cloudinary = require("../config/cloudinary");
 
+// Cloudinary storage config
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
@@ -10,6 +11,7 @@ const storage = new CloudinaryStorage({
   },
 });
 
+// Export Multer instance
 const upload = multer({ storage });
 
-module.exports = upload.single("image");
+module.exports = upload;
