@@ -1,4 +1,3 @@
-// components/TaskCard.jsx
 import React from 'react';
 import Progress from '../layouts/Progress';
 import { LuPaperclip, LuPin, LuPinOff } from 'react-icons/lu';
@@ -25,42 +24,46 @@ const TaskCard = ({
 }) => {
   const getStatusTagColor = () => {
     switch (status) {
-      case "In Progress": return "text-cyan-500 bg-cyan-50 border border-cyan-500/10";
-      case "Completed": return "text-lime-500 bg-lime-50 border border-lime-500/20";
-      default: return "text-violet-500 bg-violet-50 border border-violet-500/10";
+      case "In Progress":
+        return "text-cyan-500 bg-cyan-50 border border-cyan-500/10";
+      case "Completed":
+        return "text-lime-500 bg-lime-50 border border-lime-500/20";
+      default:
+        return "text-violet-500 bg-violet-50 border border-violet-500/10";
     }
   };
 
   const getPriorityTagColor = () => {
     switch (priority) {
-      case "Low": return "text-emerald-500 bg-emerald-50 border border-emerald-500/10";
-      case "Medium": return "text-amber-500 bg-amber-50 border border-amber-500/20";
-      default: return "text-rose-500 bg-rose-50 border border-rose-500/10";
+      case "Low":
+        return "text-emerald-500 bg-emerald-50 border border-emerald-500/10";
+      case "Medium":
+        return "text-amber-500 bg-amber-50 border border-amber-500/20";
+      default:
+        return "text-rose-500 bg-rose-50 border border-rose-500/10";
     }
   };
 
   return (
-    <div className='bg-white rounded-xl py-4 shadow-md shadow-gray-100 border border-gray-200/50'>
-      <div className="flex items-start justify-between px-4">
-        <div className="flex gap-3">
-          <div className={`text-[11px] font-medium ${getStatusTagColor()} px-4 py-0.5 rounded`}>
-            {status}
+    <div
+      onClick={onClick}
+      className="flex flex-col justify-between h-full bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition cursor-pointer border border-gray-100"
+    >
+      <div>
+        <div className="flex items-start justify-between">
+          <div className="flex gap-2 flex-wrap">
+            <span className={`text-xs font-medium px-3 py-0.5 rounded ${getStatusTagColor()}`}>
+              {status}
+            </span>
+            <span className={`text-xs font-medium px-3 py-0.5 rounded ${getPriorityTagColor()}`}>
+              {priority} priority
+            </span>
           </div>
-          <div className={`text-[11px] font-medium ${getPriorityTagColor()} px-4 py-0.5 rounded`}>
-            {priority} priority
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          {status !== "Completed" && (
-            <button
-              onClick={onClick}
-              className="text-xs bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition"
-            >
-              Go to Work
-            </button>
-          )}
           <button
-            onClick={onTogglePin}
+            onClick={(e) => {
+              e.stopPropagation();
+              onTogglePin();
+            }}
             className="p-1 rounded-full hover:bg-gray-100 transition text-gray-500"
             title={isPinned ? "Unpin Task" : "Pin Task"}
             aria-pressed={isPinned}
@@ -68,43 +71,41 @@ const TaskCard = ({
             {isPinned ? <LuPin className="text-yellow-500" /> : <LuPinOff />}
           </button>
         </div>
-      </div>
 
-      <div className={`px-4 border-l-[3px] ${
-        status === "In Progress" ? "border-cyan-500" :
-        status === "Completed" ? "border-indigo-500" : "border-violet-500"
-      }`}>
-        <p className="text-sm font-medium text-gray-800 mt-4 line-clamp-2">{title}</p>
-        <p className="text-xs text-gray-500 mt-1.5 line-clamp-2 leading-[18px]">{description}</p>
-        <p className="text-[13px] text-gray-700/80 font-medium mt-2 mb-2 leading-[18px]">
+        <h3 className="text-base font-semibold text-gray-800 mt-4 line-clamp-2">
+          {title}
+        </h3>
+        <p className="text-sm text-gray-500 mt-1 line-clamp-2">{description}</p>
+
+        <p className="text-sm font-medium text-gray-700 mt-3">
           Task Done:{" "}
-          <span className="font-semibold text-gray-700">
+          <span className="font-semibold text-gray-900">
             {completedTodoCount || 0} / {todoCheckList.length}
           </span>
         </p>
-        <Progress progress={progress ?? 0} status={status} />
-      </div>
+        <div className="mt-2">
+          <Progress progress={progress ?? 0} status={status} />
+        </div>
 
-      <div className='px-4'>
-        <div className='flex items-center justify-between my-1'>
+        <div className="flex justify-between mt-4">
           <div>
-            <label className='text-xs text-gray-500'>Start Date</label>
-            <p className='text-[13px] font-medium text-gray-900'>
+            <p className="text-xs text-gray-500">Start Date</p>
+            <p className="text-sm font-medium text-gray-900">
               {createdAt ? moment(createdAt).format("Do MMM YYYY") : '—'}
             </p>
           </div>
           <div>
-            <label className='text-xs text-gray-500'>Due Date</label>
-            <p className='text-[13px] font-medium text-gray-900'>
+            <p className="text-xs text-gray-500">Due Date</p>
+            <p className="text-sm font-medium text-gray-900">
               {dueDate ? moment(dueDate).format("Do MMM YYYY") : '—'}
             </p>
           </div>
         </div>
 
         {attachmentCount > 0 && (
-          <div className='flex items-center gap-2 bg-blue-50 px-2.5 py-1.5 rounded-lg mt-3 w-max'>
-            <LuPaperclip className='text-blue-500' />
-            <span className='text-xs text-gray-900'>{attachmentCount}</span>
+          <div className="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-lg mt-4 w-max text-blue-600 text-xs font-medium">
+            <LuPaperclip />
+            {attachmentCount} Attachment
           </div>
         )}
 
@@ -118,21 +119,27 @@ const TaskCard = ({
             <span className="text-xs text-gray-600">{user.name || "You"}</span>
           </div>
         )}
+      </div>
 
-        <div className="flex justify-end gap-2 mt-4">
-          <button
-            onClick={onUpdate}
-            className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 text-xs rounded"
-          >
-            Update
-          </button>
-          <button
-            onClick={onDelete}
-            className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded"
-          >
-            Delete
-          </button>
-        </div>
+      <div className="flex justify-end gap-2 mt-4">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onUpdate();
+          }}
+          className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 text-xs rounded"
+        >
+          Update
+        </button>
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onDelete();
+          }}
+          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded"
+        >
+          Delete
+        </button>
       </div>
     </div>
   );

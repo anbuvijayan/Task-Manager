@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "./apiPaths";
 import toast from "react-hot-toast";
-// import axiosRetry from "axios-retry"; // Optional
+//import axiosRetry from "axios-retry"; 
 
 console.log("🚀 Axios baseURL:", BASE_URL);
 
@@ -13,12 +13,12 @@ const axiosInstance = axios.create({
   },
 });
 
-// Optional: Retry failed requests (e.g., due to network errors or timeouts)
-// axiosRetry(axiosInstance, {
-//   retries: 2,
-//   retryDelay: (retryCount) => retryCount * 1000,
-//   retryCondition: (error) =>
-//     axiosRetry.isNetworkError(error) || error.code === "ECONNABORTED",
+ //Optional: Retry failed requests (e.g., due to network errors or timeouts)
+ //axiosRetry(axiosInstance, {
+  // retries: 2,
+  // retryDelay: (retryCount) => retryCount * 1000,
+  // retryCondition: (error) =>
+ //   axiosRetry.isNetworkError(error) || error.code === "ECONNABORTED",
 // });
 
 // Helper: Safely check if JWT token is expired

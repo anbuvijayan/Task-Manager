@@ -74,56 +74,59 @@ const SignUp = () => {
 
   return (
     <AuthLayout>
-      <div className="lg:w-[100%] h-auto md:h-full mt-10 flex flex-col justify-center">
-        <h3 className="text-xl font-semibold text-black">Create an Account</h3>
-        <p className="text-xs text-slate-700 mt-[5px] mb-6">
-          Please enter your details to create an account.
+    <div className="lg:w-[70%] h-3/4 md:h-full flex flex-col justify-center animate-fade-in-up">
+      <h3 className="text-xl font-semibold text-black">Create an Account</h3>
+      <p className="text-xs text-slate-700 mt-[5px] mb-6">
+        Please enter your details to create an account.
+      </p>
+  
+      <form onSubmit={handleSignUp}>
+        <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
+  
+        <div className="grid grid-cols-1 gap-4">
+          <Input
+            label="Full Name"
+            placeholder="Alex"
+            type="text"
+            value={fullName}
+            onChange={({ target }) => setFullName(target.value)}
+          />
+          <Input
+            label="Email Address"
+            placeholder="alex@example.com"
+            type="email"
+            value={email}
+            onChange={({ target }) => setEmail(target.value)}
+          />
+          <Input
+            label="Password"
+            placeholder="********"
+            type="password"
+            value={password}
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+  
+        <button
+          type="submit"
+          className={`btn-primary mt-6 w-full ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+          disabled={loading}
+        >
+          {loading ? "Signing Up..." : "Sign Up"}
+        </button>
+  
+        <p className="text-xs text-slate-700 mt-4 text-center">
+          Already have an account?{" "}
+          <Link className="font-medium text-primary underline" to="/login">
+            Login
+          </Link>
         </p>
+      </form>
+    </div>
+  </AuthLayout>
+  
 
-        <form onSubmit={handleSignUp}>
-          <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              label="Full Name"
-              placeholder="John Doe"
-              type="text"
-              value={fullName}
-              onChange={({ target }) => setFullName(target.value)}
-            />
-            <Input
-              label="Email Address"
-              placeholder="john@example.com"
-              type="email"
-              value={email}
-              onChange={({ target }) => setEmail(target.value)}
-            />
-            <Input
-              label="Password"
-              placeholder="********"
-              type="password"
-              value={password}
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-
-          <button
-            type="submit"
-            className={`btn-primary mt-6 ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-            disabled={loading}
-          >
-            {loading ? "Signing Up..." : "Sign Up"}
-          </button>
-
-          <p className="text-xs text-slate-700 mt-4">
-            Already have an account?{" "}
-            <Link className="font-medium text-primary underline" to="/login">
-              Login
-            </Link>
-          </p>
-        </form>
-      </div>
-    </AuthLayout>
   );
 };
 
