@@ -72,7 +72,7 @@ const TaskCard = ({
           </button>
         </div>
 
-        <h3 className="text-base font-semibold text-gray-800 mt-4 line-clamp-2">
+        <h3 className="text-base font-semibold text-gray-800 mt-4 line-clamp-1">
           {title}
         </h3>
         <p className="text-sm text-gray-500 mt-1 line-clamp-2">{description}</p>
