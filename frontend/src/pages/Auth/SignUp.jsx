@@ -23,7 +23,6 @@ const SignUp = () => {
     e.preventDefault();
     setLoading(true);
 
-    // Input validation
     if (!fullName || !email || !password) {
       toast.error("All fields are required.");
       setLoading(false);
@@ -47,7 +46,11 @@ const SignUp = () => {
       formData.append("name", fullName);
       formData.append("email", email);
       formData.append("password", password);
-      if (profilePic) formData.append("image", profilePic);
+
+      // ✅ Use 'profileImage' to match backend multer field
+      if (profilePic) {
+        formData.append("profileImage", profilePic);
+      }
 
       const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, formData, {
         headers: { "Content-Type": "multipart/form-data" },
