@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Helmet } from "react-helmet";
 import { useInView } from "react-intersection-observer";
+import { ShieldCheckIcon, AdjustmentsHorizontalIcon, BookmarkIcon } from "@heroicons/react/24/outline";
 
 
 const fadeInUp = {
@@ -24,18 +25,19 @@ export default function Home() {
         />
       </Helmet>
 
-      <main className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-white">
-
+      <main className="relative overflow-hidden min-h-screen flex flex-col items-center justify-center px-4 py-16 bg-white dark:bg-gray-900 transition-colors duration-500">
+        {/* Background animation blobs */}
         <div className="absolute -top-32 -left-32 w-[500px] h-[500px] bg-purple-300 opacity-30 rounded-full filter blur-3xl animate-pulse z-0" />
         <div className="absolute -bottom-32 -right-32 w-[500px] h-[500px] bg-blue-300 opacity-30 rounded-full filter blur-3xl animate-pulse z-0" />
 
+        {/* Main content */}
         <div className="relative z-10 w-full max-w-5xl text-center">
           <motion.h1
             variants={fadeInUp}
             initial="hidden"
             animate="visible"
             custom={0}
-            className="text-4xl md:text-5xl font-bold text-blue-700 mb-4"
+            className="text-4xl md:text-5xl font-bold text-blue-700 dark:text-blue-400 mb-4"
           >
             Welcome to TaskManager
           </motion.h1>
@@ -45,13 +47,13 @@ export default function Home() {
             initial="hidden"
             animate="visible"
             custom={0.2}
-            className="text-lg text-gray-700 mb-8"
+            className="text-lg text-gray-700 dark:text-gray-300 mb-8"
           >
             Organize your life with ease. Create, manage and track your daily tasks – all in one clean interface.
           </motion.p>
 
           <motion.div
-            className="flex justify-center gap-4 mb-12"
+            className="flex flex-col sm:flex-row justify-center gap-4 mb-12"
             variants={fadeInUp}
             initial="hidden"
             animate="visible"
@@ -65,7 +67,7 @@ export default function Home() {
             </Link>
             <Link
               to="/signup"
-              className="bg-white border border-blue-200 text-blue-600 px-6 py-2 rounded-xl hover:bg-blue-50 transition"
+              className="bg-white dark:bg-gray-800 border border-blue-200 text-blue-600 dark:text-blue-300 px-6 py-2 rounded-xl hover:bg-blue-50 dark:hover:bg-gray-700 transition"
             >
               Sign Up
             </Link>
@@ -73,28 +75,32 @@ export default function Home() {
 
           <section className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
             <AnimatedFeature
+              Icon={ShieldCheckIcon}
               title="Secure Login"
               desc="Encrypted authentication for your privacy."
               delay={0.2}
             />
             <AnimatedFeature
+              Icon={AdjustmentsHorizontalIcon}
               title="Smart Sorting"
               desc="Sort your tasks by title, date or completion."
               delay={0.4}
             />
             <AnimatedFeature
+              Icon={BookmarkIcon}  // ✅ FIXED
               title="Pin & Complete"
               desc="Highlight and complete tasks with ease."
               delay={0.6}
             />
           </section>
+
         </div>
       </main>
     </>
   );
 }
 
-function AnimatedFeature({ title, desc, delay }) {
+function AnimatedFeature({ Icon, title, desc, delay }) {
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
 
   return (
@@ -104,10 +110,13 @@ function AnimatedFeature({ title, desc, delay }) {
       initial="hidden"
       animate={inView ? "visible" : "hidden"}
       custom={delay}
-      className="bg-white p-6 rounded-2xl shadow-md hover:shadow-xl transition text-left"
+      className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-md hover:shadow-xl transition text-left"
     >
-      <h3 className="text-xl font-semibold text-gray-800 mb-2">{title}</h3>
-      <p className="text-gray-600">{desc}</p>
+      <div className="flex items-center gap-3 mb-3">
+        <Icon className="h-6 w-6 text-blue-500" />
+        <h3 className="text-xl font-semibold text-gray-800 dark:text-white">{title}</h3>
+      </div>
+      <p className="text-gray-600 dark:text-gray-300">{desc}</p>
     </motion.div>
   );
 }

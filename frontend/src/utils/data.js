@@ -4,7 +4,7 @@ import {
   LuSquarePlus,
   LuLogOut,
   LuUsers,
-  LuClipboard  // Import the new icon
+  LuClipboard,
 } from "react-icons/lu";
 
 export const SIDE_MENU_USER_DATA = [
@@ -26,7 +26,6 @@ export const SIDE_MENU_USER_DATA = [
     icon: LuClipboardCheck,
     path: "/user/tasks",
   },
-  
   {
     id: "04",
     label: "Logout",
@@ -36,31 +35,13 @@ export const SIDE_MENU_USER_DATA = [
 ];
 
 export const PRIORITY_DATA = [
-  {
-    label: "Low",
-    value: "Low"
-  },
-  {
-    label: "Medium",
-    value: "Medium"
-  },
-  {
-    label: "High",
-    value: "High"
-  },
+  { label: "Low", value: "Low" },
+  { label: "Medium", value: "Medium" },
+  { label: "High", value: "High" },
 ];
 
 export const STATUS_DATA = [
-  {
-    label: "Pending",
-    value: "Pending"
-  },
-  {
-    label: "In Progress",
-    value: "In Progress"
-  },
-  {
-    label: "Completed",
-    value: "Completed"
-  },
+  { label: "Pending", value: "Pending" },
+  { label: "In Progress", value: "In Progress" },
+  { label: "Completed", value: "Completed" },
 ];

@@ -1,38 +1,22 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 const AuthLayout = ({ children }) => {
-    return (
-        <div className="flex h-screen w-screen">
-            {/* Left side with subtle SVG pattern */}
-            <div className="hidden md:flex w-[40vw] h-full relative bg-sky-800">
-                <svg
-                    className="absolute inset-0 w-full h-full text-gray-300"
-                    fill="none"
-                >
-                    <defs>
-                        <pattern
-                            id="diagonal-stripes"
-                            width="40"
-                            height="40"
-                            patternUnits="userSpaceOnUse"
-                            patternTransform="rotate(45)"
-                        >
-                            <rect width="2" height="40" fill="currentColor" />
-                        </pattern>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#diagonal-stripes)" />
-                </svg>
-
-
-            </div>
-
-            {/* Right side with form */}
-            <div className="w-screen h-screen md:w-[60vw] px-12 pt-8 pb-12 flex flex-col justify-center backdrop-blur-lg bg-white/60 animate-fade-in">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4 tracking-wide">Task Manager</h2>
-                {children}
-            </div>
-        </div>
-    );
+  return (
+    <motion.div
+      className="min-h-screen w-full flex items-center justify-center px-4 bg-white dark:bg-gray-900 transition-colors duration-500"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.6 }}
+    >
+      <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-xl shadow-md p-8">
+        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-6 tracking-wide">
+          Task Manager
+        </h2>
+        {children}
+      </div>
+    </motion.div>
+  );
 };
 
 export default AuthLayout;

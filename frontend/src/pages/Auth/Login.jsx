@@ -7,7 +7,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { UserContext } from "../../context/userContext";
 import toast from "react-hot-toast";
-import { Mail, Lock } from "lucide-react"; // Icons
+import { Mail, Lock } from "lucide-react";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -34,13 +34,17 @@ const Login = () => {
     }
 
     if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long");
+      toast.error("Password must be at least 6 characters");
       setLoading(false);
       return;
     }
 
     try {
-      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, { email, password });
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email,
+        password,
+      });
+
       const { token, ...userData } = response.data;
 
       if (token) {
@@ -59,11 +63,15 @@ const Login = () => {
 
   return (
     <AuthLayout>
-      <div className="lg:w-[70%] h-3/4 md:h-full flex flex-col justify-center animate-fade-in-up">
-        <h3 className="text-2xl font-bold text-gray-800 mb-1">Welcome Back....</h3>
-        <p className="text-sm text-slate-600 mb-6">Enter your credentials to continue</p>
+      <div className="flex flex-col justify-center animate-fade-in-up">
+        <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-1 text-center">
+          Welcome Back
+        </h3>
+        <p className="text-sm text-slate-600 dark:text-slate-300 mb-6 text-center">
+          Enter your credentials to continue
+        </p>
 
-        <form onSubmit={handleLogin} className="space-y-4">
+        <form onSubmit={handleLogin} className="space-y-5">
           <Input
             icon={<Mail className="w-4 h-4 text-gray-500" />}
             value={email}
@@ -83,17 +91,20 @@ const Login = () => {
 
           <button
             type="submit"
-            className={`w-full bg-blue-600 text-white py-2 rounded-lg font-semibold transition hover:bg-blue-700 duration-200 ${
+            disabled={loading}
+            className={`w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-200 ${
               loading ? "opacity-50 cursor-not-allowed" : ""
             }`}
-            disabled={loading}
           >
             {loading ? "Logging in..." : "Login"}
           </button>
 
-          <p className="text-sm text-slate-600 mt-3 text-center">
+          <p className="text-sm text-center text-slate-600 dark:text-slate-300 mt-3">
             Don&apos;t have an account?{" "}
-            <Link className="text-blue-600 hover:underline font-medium" to="/signUp">
+            <Link
+              to="/signup"
+              className="text-blue-600 hover:underline font-medium"
+            >
               Sign up
             </Link>
           </p>

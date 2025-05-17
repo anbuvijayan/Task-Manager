@@ -1,8 +1,8 @@
-import React from 'react';
-import Progress from '../layouts/Progress';
-import { LuPaperclip, LuPin, LuPinOff } from 'react-icons/lu';
-import moment from 'moment';
-import PropTypes from 'prop-types';
+import React from "react";
+import Progress from "../layouts/Progress";
+import { LuPaperclip, LuPin, LuPinOff } from "react-icons/lu";
+import moment from "moment";
+import PropTypes from "prop-types";
 
 const TaskCard = ({
   title,
@@ -20,7 +20,7 @@ const TaskCard = ({
   onUpdate,
   onDelete,
   isPinned,
-  user
+  user,
 }) => {
   const getStatusTagColor = () => {
     switch (status) {
@@ -44,10 +44,32 @@ const TaskCard = ({
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick();
+    }
+  };
+
+  const getUserInitials = () => {
+    if (!user?.name) return "U";
+    return user.name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+  };
+
   return (
     <div
       onClick={onClick}
-      className="flex flex-col justify-between h-full bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition cursor-pointer border border-gray-100"
+      role="button"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+      aria-label={`Task card for ${title}`}
+      className="flex flex-col justify-between h-full bg-white rounded-2xl p-4 shadow-sm hover:shadow-md transition cursor-pointer border border-gray-100
+                 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400
+                 dark:bg-gray-800 dark:border-gray-700"
     >
       <div>
         <div className="flex items-start justify-between">
@@ -64,22 +86,23 @@ const TaskCard = ({
               e.stopPropagation();
               onTogglePin();
             }}
-            className="p-1 rounded-full hover:bg-gray-100 transition text-gray-500"
+            className="p-1 rounded-full hover:bg-gray-100 transition text-gray-500 dark:hover:bg-gray-700"
             title={isPinned ? "Unpin Task" : "Pin Task"}
             aria-pressed={isPinned}
+            aria-label={isPinned ? "Unpin Task" : "Pin Task"}
           >
             {isPinned ? <LuPin className="text-yellow-500" /> : <LuPinOff />}
           </button>
         </div>
 
-        <h3 className="text-base font-semibold text-gray-800 mt-4 line-clamp-1">
+        <h3 className="text-base font-semibold text-gray-800 mt-4 line-clamp-1 dark:text-gray-100">
           {title}
         </h3>
-        <p className="text-sm text-gray-500 mt-1 line-clamp-2">{description}</p>
+        <p className="text-sm text-gray-500 mt-1 line-clamp-2 dark:text-gray-300">{description}</p>
 
-        <p className="text-sm font-medium text-gray-700 mt-3">
+        <p className="text-sm font-medium text-gray-700 mt-3 dark:text-gray-200">
           Task Done:{" "}
-          <span className="font-semibold text-gray-900">
+          <span className="font-semibold text-gray-900 dark:text-gray-100">
             {completedTodoCount || 0} / {todoCheckList.length}
           </span>
         </p>
@@ -87,36 +110,21 @@ const TaskCard = ({
           <Progress progress={progress ?? 0} status={status} />
         </div>
 
-        <div className="flex justify-between mt-4">
+        <div className="flex justify-between mt-4 text-gray-900 dark:text-gray-200">
           <div>
-            <p className="text-xs text-gray-500">Start Date</p>
-            <p className="text-sm font-medium text-gray-900">
-              {createdAt ? moment(createdAt).format("Do MMM YYYY") : '—'}
-            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Start Date</p>
+            <p className="text-sm font-medium">{createdAt ? moment(createdAt).format("Do MMM YYYY") : "—"}</p>
           </div>
           <div>
-            <p className="text-xs text-gray-500">Due Date</p>
-            <p className="text-sm font-medium text-gray-900">
-              {dueDate ? moment(dueDate).format("Do MMM YYYY") : '—'}
-            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">Due Date</p>
+            <p className="text-sm font-medium">{dueDate ? moment(dueDate).format("Do MMM YYYY") : "—"}</p>
           </div>
         </div>
 
         {attachmentCount > 0 && (
-          <div className="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-lg mt-4 w-max text-blue-600 text-xs font-medium">
+          <div className="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-lg mt-4 w-max text-blue-600 text-xs font-medium dark:bg-blue-900 dark:text-blue-300">
             <LuPaperclip />
-            {attachmentCount} Attachment
-          </div>
-        )}
-
-        {user?.avatar && (
-          <div className="mt-3 flex items-center gap-2">
-            <img
-              src={user.avatar}
-              alt="User Avatar"
-              className="w-6 h-6 rounded-full border border-gray-200"
-            />
-            <span className="text-xs text-gray-600">{user.name || "You"}</span>
+            {attachmentCount} Attachment{attachmentCount > 1 ? "s" : ""}
           </div>
         )}
       </div>
@@ -127,7 +135,8 @@ const TaskCard = ({
             e.stopPropagation();
             onUpdate();
           }}
-          className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 text-xs rounded"
+          className="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 text-xs rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+          aria-label={`Update task ${title}`}
         >
           Update
         </button>
@@ -136,7 +145,8 @@ const TaskCard = ({
             e.stopPropagation();
             onDelete();
           }}
-          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded"
+          className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-xs rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-pink-500"
+          aria-label={`Delete task ${title}`}
         >
           Delete
         </button>
@@ -161,7 +171,6 @@ TaskCard.propTypes = {
   onUpdate: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   isPinned: PropTypes.bool.isRequired,
-  user: PropTypes.object,
 };
 
 export default TaskCard;

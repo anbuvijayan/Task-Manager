@@ -57,7 +57,7 @@ const CustomBarChart = ({ data }) => {
 
   return (
     <div
-      className="bg-white mt-6 p-4 rounded-lg"
+      className="mt-6 p-4 rounded-lg"
       aria-label="Task priority bar chart"
     >
       <ResponsiveContainer width="100%" height={300}>

@@ -14,7 +14,10 @@ import PropTypes from "prop-types";
 const CustomPieChart = ({ data = [], colors = [] }) => {
   if (!data.length) {
     return (
-      <div className="flex justify-center items-center h-64 text-gray-500">
+      <div
+        className="flex justify-center items-center h-64 text-gray-500"
+        aria-live="polite"
+      >
         No data available
       </div>
     );

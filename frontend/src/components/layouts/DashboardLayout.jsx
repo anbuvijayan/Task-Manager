@@ -20,11 +20,9 @@ const DashboardLayout = ({ children, activeMenu }) => {
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Prevent scrolling when side menu is open on mobile
   useEffect(() => {
     document.body.style.overflow = openSideMenu ? "hidden" : "auto";
     return () => {
@@ -33,28 +31,38 @@ const DashboardLayout = ({ children, activeMenu }) => {
   }, [openSideMenu]);
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar activeMenu={activeMenu} toggleSideMenu={toggleSideMenu} />
 
-      <div className="flex flex-grow overflow-hidden">
+      <div className="flex flex-grow overflow-hidden relative">
         {/* Desktop Sidebar */}
         <div className="hidden lg:block">
           <SideMenu activeMenu={activeMenu} />
         </div>
 
+        {/* Mobile Sidebar Overlay */}
+        {openSideMenu && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-40 z-30 lg:hidden"
+            onClick={() => setOpenSideMenu(false)}
+            aria-hidden="true"
+          />
+        )}
+
         {/* Mobile Sidebar */}
-        <div
+        <nav
           ref={sideMenuRef}
-          className={`fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-40 transition-transform duration-300 ease-in-out lg:hidden ${
+          className={`fixed top-0 left-0 w-64 h-full bg-white dark:bg-gray-800 shadow-lg z-40 transform transition-transform duration-300 ease-in-out lg:hidden ${
             openSideMenu ? "translate-x-0" : "-translate-x-full"
           }`}
           aria-hidden={!openSideMenu}
+          aria-label="Sidebar navigation"
         >
           <SideMenu activeMenu={activeMenu} />
-        </div>
+        </nav>
 
         {/* Main Content */}
-        <main className="flex-grow px-4 py-6 overflow-y-auto bg-gray-50 rounded-md">
+        <main className="flex-grow px-4 py-6 overflow-y-auto rounded-md">
           {children}
         </main>
       </div>

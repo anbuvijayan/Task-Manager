@@ -46,8 +46,6 @@ const SignUp = () => {
       formData.append("name", fullName);
       formData.append("email", email);
       formData.append("password", password);
-
-      // ✅ Use 'profileImage' to match backend multer field
       if (profilePic) {
         formData.append("profileImage", profilePic);
       }
@@ -57,7 +55,6 @@ const SignUp = () => {
       });
 
       const { token, ...userData } = response.data;
-
       if (token) {
         const fullUser = { ...userData, token };
         localStorage.setItem("user", JSON.stringify(fullUser));
@@ -74,16 +71,17 @@ const SignUp = () => {
 
   return (
     <AuthLayout>
-    <div className="lg:w-[70%] h-3/4 md:h-full flex flex-col justify-center animate-fade-in-up">
-      <h3 className="text-xl font-semibold text-black">Create an Account</h3>
-      <p className="text-xs text-slate-700 mt-[5px] mb-6">
-        Please enter your details to create an account.
-      </p>
-  
-      <form onSubmit={handleSignUp}>
-        <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
-  
-        <div className="grid grid-cols-1 gap-4">
+      <div className="flex flex-col justify-center animate-fade-in-up">
+        <h3 className="text-xl font-semibold text-center text-gray-800 dark:text-white mb-1">
+          Create an Account
+        </h3>
+        <p className="text-sm text-center text-slate-600 dark:text-slate-300 mb-6">
+          Please enter your details to register.
+        </p>
+
+        <form onSubmit={handleSignUp} className="space-y-4">
+          <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
+
           <Input
             label="Full Name"
             placeholder="Alex"
@@ -105,28 +103,26 @@ const SignUp = () => {
             value={password}
             onChange={({ target }) => setPassword(target.value)}
           />
-        </div>
-  
-        <button
-          type="submit"
-          className={`btn-primary mt-6 w-full ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
-          disabled={loading}
-        >
-          {loading ? "Signing Up..." : "Sign Up"}
-        </button>
-  
-        <p className="text-xs text-slate-700 mt-4 text-center">
-          Already have an account?{" "}
-          <Link className="font-medium text-primary underline" to="/login">
-            Login
-          </Link>
-        </p>
-      </form>
-    </div>
-  </AuthLayout>
-  
 
+          <button
+            type="submit"
+            className={`w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-200 ${
+              loading ? "opacity-50 cursor-not-allowed" : ""
+            }`}
+            disabled={loading}
+          >
+            {loading ? "Signing Up..." : "Sign Up"}
+          </button>
 
+          <p className="text-sm text-center text-slate-600 dark:text-slate-300 mt-4">
+            Already have an account?{" "}
+            <Link to="/login" className="text-blue-600 hover:underline font-medium">
+              Login
+            </Link>
+          </p>
+        </form>
+      </div>
+    </AuthLayout>
   );
 };
 

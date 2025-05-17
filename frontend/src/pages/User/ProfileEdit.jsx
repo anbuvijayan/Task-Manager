@@ -14,7 +14,6 @@ const ProfileEdit = () => {
   const [profileImage, setProfileImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
   const [loading, setLoading] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -54,12 +53,8 @@ const ProfileEdit = () => {
       });
 
       setUser(res.data.user);
-      toast.success("Profile updated!");
-      setShowSuccess(true);
 
-      setTimeout(() => {
-        navigate("/user/dashboard");
-      }, 2000);
+      navigate("/user/dashboard", { state: { message: "Profile updated successfully!" } });
     } catch (err) {
       console.error(err);
       toast.error(err.response?.data?.message || "Failed to update profile");
@@ -69,28 +64,15 @@ const ProfileEdit = () => {
     }
   };
 
-  if (showSuccess) {
-    return (
-      <DashboardLayout activeMenu="Edit Profile">
-        <div className="flex flex-col items-center justify-center h-[60vh] text-center px-4">
-          <div className="bg-green-100 text-green-700 px-6 py-4 rounded-lg shadow-md">
-            <h2 className="text-xl font-semibold">Profile Updated Successfully!</h2>
-            <p className="text-sm mt-1">Redirecting to your profile...</p>
-          </div>
-        </div>
-      </DashboardLayout>
-    );
-  }
-
   return (
     <DashboardLayout activeMenu="Edit Profile">
-      <div className="max-w-2xl mx-auto mt-10 bg-white border border-gray-200 shadow-lg rounded-2xl p-6 md:p-8">
-        <h2 className="text-2xl font-bold text-gray-800 mb-6">Edit Profile</h2>
+      <div className="max-w-2xl mx-auto mt-10 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 shadow-lg rounded-2xl p-6 md:p-8">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Edit Profile</h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Profile Image Upload */}
           <div className="flex flex-col sm:flex-row items-center gap-6">
-            <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-300">
+            <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-600">
               <img
                 src={previewUrl || "/default-user.png"}
                 alt="Preview"
@@ -100,7 +82,7 @@ const ProfileEdit = () => {
             <div className="w-full">
               <label
                 htmlFor="profileImage"
-                className="cursor-pointer inline-block px-4 py-2 bg-blue-50 text-blue-700 font-semibold rounded-lg shadow-sm hover:bg-blue-100"
+                className="cursor-pointer inline-block px-4 py-2 bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-400 font-semibold rounded-lg shadow-sm hover:bg-blue-100 dark:hover:bg-blue-800"
               >
                 Change Image
                 <input
@@ -111,13 +93,16 @@ const ProfileEdit = () => {
                   className="hidden"
                 />
               </label>
-              <p className="text-xs text-gray-500 mt-1">Accepted formats: JPG, PNG</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Accepted formats: JPG, PNG</p>
             </div>
           </div>
 
           {/* Name */}
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
               Full Name
             </label>
             <input
@@ -126,13 +111,18 @@ const ProfileEdit = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm
+                         focus:ring-2 focus:ring-blue-500 focus:outline-none
+                         bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             />
           </div>
 
           {/* Password */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+            >
               New Password
             </label>
             <input
@@ -141,7 +131,9 @@ const ProfileEdit = () => {
               value={password}
               placeholder="Leave blank to keep current password"
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm
+                         focus:ring-2 focus:ring-blue-500 focus:outline-none
+                         bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
             />
           </div>
 
@@ -150,7 +142,8 @@ const ProfileEdit = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 text-white py-3 px-6 rounded-lg font-semibold shadow hover:bg-blue-700 transition disabled:opacity-60"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold shadow
+                         transition disabled:opacity-60"
             >
               {loading ? "Updating..." : "Save Changes"}
             </button>

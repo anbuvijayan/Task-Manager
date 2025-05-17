@@ -4,19 +4,20 @@ import PropTypes from "prop-types";
 const InfoCard = ({ icon, label, value, color }) => {
   return (
     <div
-      className="flex items-center p-3 bg-white rounded-lg shadow border border-gray-200"
+      className="flex items-center"
       role="region"
       aria-label={`${label}: ${value}`}
     >
       {icon && (
-        <div className="mr-3 text-xl text-gray-600" aria-hidden="true">
+        <div className="mr-3 text-xl text-gray-600 flex-shrink-0" aria-hidden="true">
           {icon}
         </div>
       )}
 
-      <div className="flex items-center gap-2">
-        <div className={`w-2.5 h-5 ${color} rounded-full`} />
-        <p className="text-xs md:text-sm text-gray-600">
+      <div className="flex items-center gap-2 flex-wrap">
+        {/* Color box */}
+        <div className={`w-2.5 h-5 ${color} rounded-full flex-shrink-0`} />
+        <p className="text-xs md:text-sm text-gray-600 whitespace-nowrap">
           <span className="text-sm md:text-base text-black font-semibold">{value}</span> {label}
         </p>
       </div>
@@ -28,7 +29,7 @@ InfoCard.propTypes = {
   icon: PropTypes.node,
   label: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-  color: PropTypes.string.isRequired, // Tailwind color class, e.g., 'bg-blue-500'
+  color: PropTypes.string.isRequired,
 };
 
 export default InfoCard;
